@@ -5,6 +5,7 @@ import {
   requestUserInfoId,
   requestUserMenusByRoleId
 } from "@/network/login/login";
+import { MapMenusToRoutes } from "@/utils/map-menus";
 import localCache from "@/utils/cache";
 import { IRootState } from "../types";
 import { ILoginState } from "./types";
@@ -27,6 +28,10 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
     changeUserMenus(state, userMenus) {
       state.userMenus = userMenus;
+      const routes = MapMenusToRoutes(userMenus);
+      routes.forEach((route) => {
+        router.addRoute("main", route);
+      });
     }
   },
   actions: {
@@ -38,7 +43,6 @@ const loginModule: Module<ILoginState, IRootState> = {
       localCache.setCache("token", token);
       //2.请求用户信息
       const userInfoResult = await requestUserInfoId(id);
-      console.log(userInfoResult);
       const userInfo = userInfoResult.data;
       commit("changeUserInfo", userInfo);
       localCache.setCache("userInfo", userInfo);

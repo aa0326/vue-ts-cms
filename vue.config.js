@@ -1,14 +1,14 @@
-const AutoImport = require('unplugin-auto-import/webpack')
-const Components = require('unplugin-vue-components/webpack')
-const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
+const AutoImport = require("unplugin-auto-import/webpack");
+const Components = require("unplugin-vue-components/webpack");
+const { ElementPlusResolver } = require("unplugin-vue-components/resolvers");
 module.exports = {
-  outputDir: './build',
+  outputDir: "./build",
   devServer: {
     proxy: {
-      '/api': {
+      "/api": {
         target: "http://152.136.185.210:5000",
         pathRewrite: {
-          '^/api': ''
+          "^/api": ""
         },
         changeOrigin: true
       }
@@ -17,17 +17,17 @@ module.exports = {
   configureWebpack: {
     resolve: {
       alias: {
-        views: '@/views',
-        assets: '@/assets',
+        views: "@/views",
+        assets: "@/assets"
       }
     },
     plugins: [
       AutoImport({
-        resolvers: [ElementPlusResolver()],
+        resolvers: [ElementPlusResolver()]
       }),
       Components({
-        resolvers: [ElementPlusResolver()],
-      }),
+        resolvers: [ElementPlusResolver()]
+      })
     ]
   }
-}
+};

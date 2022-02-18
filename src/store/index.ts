@@ -1,5 +1,5 @@
-import { createStore, storeKey } from "vuex";
-import { IRootState } from "./types";
+import { createStore, Store, useStore as userVuexStore } from "vuex";
+import { IRootState, IStoreType } from "./types";
 
 //模块导入
 import login from "./login/login";
@@ -17,5 +17,7 @@ const store = createStore<IRootState>({
 export function setupStore() {
   store.dispatch("login/loadLocal");
 }
-
+export function useStore(): Store<IStoreType> {
+  return userVuexStore();
+}
 export default store;

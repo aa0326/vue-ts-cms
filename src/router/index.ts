@@ -3,6 +3,7 @@ import { RouteRecordRaw } from "vue-router";
 import localCache from "@/utils/cache";
 const login = () => import("@/views/login/login.vue");
 const main = () => import("@/views/main/main.vue");
+const NotFound = () => import("@/views/not-found/not-found.vue");
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
@@ -10,11 +11,18 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: "/login",
+    name: "login",
     component: login
   },
   {
     path: "/main",
+    name: "main",
     component: main
+  },
+  {
+    path: "/:patchMatch(.*)*",
+    name: "not-found",
+    component: NotFound
   }
 ];
 const router = createRouter({
@@ -22,7 +30,6 @@ const router = createRouter({
   history: createWebHashHistory()
 });
 router.beforeEach((to) => {
-  console.log(to.path);
   if (to.path !== "/login") {
     const token = localCache.getCache("token");
     if (!token) {

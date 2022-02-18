@@ -9,7 +9,18 @@ import { App } from "vue";
 //   ElBacktop,
 //   ElBadge
 // } from "element-plus";
-import { UserFilled, Iphone } from "@element-plus/icons-vue";
+import {
+  UserFilled,
+  Iphone,
+  Monitor,
+  Setting,
+  Goods,
+  ChatLineRound,
+  Expand,
+  Fold,
+  ArrowDown,
+  CloseBold
+} from "@element-plus/icons-vue";
 const components = [
   // ElButton,
   // ElTable,
@@ -20,7 +31,15 @@ const components = [
   // ElBacktop,
   // ElBadge,
   UserFilled,
-  Iphone
+  Iphone,
+  Monitor,
+  Setting,
+  Goods,
+  ChatLineRound,
+  Expand,
+  Fold,
+  ArrowDown,
+  CloseBold
 ];
 
 export default function (app: App) {
