@@ -1,7 +1,7 @@
 <template>
   <div class="user">
     <div class="search">
-      <hy-form v-bind="fromConfig"></hy-form>
+      <page-search :searchFormConfig="fromConfig"></page-search>
     </div>
     <div class="content"></div>
   </div>
@@ -9,11 +9,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import HyForm from "@/base-ui/form/index";
+import PageSearch from "@/components/page-search/index";
 import { fromConfig } from "./config/search.config";
 export default defineComponent({
   components: {
-    HyForm
+    PageSearch
   },
   name: "user",
   setup() {
