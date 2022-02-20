@@ -6,7 +6,7 @@
         <span v-if="!collapse" class="title">Vue3+TS</span>
       </div>
       <el-menu
-        default-active="2"
+        :default-active="defaultValue"
         class="el-menu-vertical"
         background-color="#oc2135"
         text-color="#b7bdc3"
@@ -19,7 +19,7 @@
               <template #title>
                 <el-icon :class="item.icon" v-if="item.icon"
                   ><component
-                    v-bind:is="item.icon.replace(/el-icon/g, '')"
+                    :is="item.icon.replace(/el-icon/g, '')"
                   ></component
                 ></el-icon>
                 <span>{{ item.name }}</span>
@@ -48,9 +48,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { useStore } from "@/store/index";
-import router from "@/router/index";
+import { useRouter, useRoute } from "vue-router";
+import { pathMapToMenu } from "@/utils/map-menus";
+
 export default defineComponent({
   props: {
     collapse: {
@@ -59,8 +61,17 @@ export default defineComponent({
     }
   },
   setup() {
+    //vuex
     const store = useStore();
-    const userMenus = store.state.login.userMenus;
+    const userMenus = computed(() => store.state.login.userMenus);
+    //vue-router
+    const router = useRouter();
+    const route = useRoute();
+    const currentPath = route.path;
+    //data
+    const menu = pathMapToMenu(userMenus.value, currentPath);
+    const defaultValue = ref(menu.id + "");
+    //event handle
     const handleMenuItemClick = (item: any) => {
       router.push({
         path: item.url ?? "/not-found"
@@ -68,6 +79,7 @@ export default defineComponent({
     };
     return {
       userMenus,
+      defaultValue,
       handleMenuItemClick
     };
   }

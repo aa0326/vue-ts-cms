@@ -8,7 +8,7 @@
     </div>
 
     <div class="content">
-      <div>面包屑</div>
+      <hy-breadcrumb :breadcrumb="breadcrumbs"></hy-breadcrumb>
       <user-info></user-info>
     </div>
   </div>
@@ -16,10 +16,16 @@
 
 <script lang="ts">
 import userInfo from "./user-info.vue";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
+import { useStore } from "@/store";
+import { useRoute } from "vue-router";
+import HyBreadcrumb, { IBreadcrumb } from "@/base-ui/breadcrumb";
+import { pathMapBreadcrumbs } from "@/utils/map-menus";
+
 export default defineComponent({
   components: {
-    userInfo
+    userInfo,
+    HyBreadcrumb
   },
   emits: ["foldChange"],
   setup(props, { emit }) {
@@ -28,8 +34,19 @@ export default defineComponent({
       isFold.value = !isFold.value;
       emit("foldChange", isFold.value);
     };
+
+    //面包屑的数据
+
+    const breadcrumbs = computed(() => {
+      const store = useStore();
+      const userMenus = store.state.login.userMenus;
+      const route = useRoute();
+      const currentPath = route.path;
+      return pathMapBreadcrumbs(userMenus, currentPath);
+    });
     return {
       isFold,
+      breadcrumbs,
       handleFoldClick
     };
   }
