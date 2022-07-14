@@ -19,7 +19,9 @@ import {
   Expand,
   Fold,
   ArrowDown,
-  CloseBold
+  CloseBold,
+  EditPen,
+  DeleteFilled
 } from "@element-plus/icons-vue";
 const components = [
   // ElButton,
@@ -39,7 +41,9 @@ const components = [
   Expand,
   Fold,
   ArrowDown,
-  CloseBold
+  CloseBold,
+  EditPen,
+  DeleteFilled
 ];
 
 export default function (app: App) {

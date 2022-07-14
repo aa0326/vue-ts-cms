@@ -11,6 +11,7 @@
               :label="item.label"
               :rules="item.rules"
               :style="itemStyle"
+              v-if="!item.isHidden"
             >
               <template
                 v-if="item.type === 'input' || item.type === 'password'"
@@ -28,8 +29,13 @@
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
                   v-model="formData[`${item.field}`]"
+                  style="width: 100%"
                 >
-                  <el-option v-for="option in item.options" :key="option.label">
+                  <el-option
+                    v-for="option in item.options"
+                    :key="option.label"
+                    :value="option.value"
+                  >
                     {{ option.label }}
                   </el-option>
                 </el-select>
@@ -87,7 +93,12 @@ export default defineComponent({
   emits: ["update:modelValue"],
   setup(props, { emit }) {
     const formData = ref({ ...props.modelValue });
-    console.log(props.modelValue);
+    // watch(
+    //   () => props.modelValue,
+    //   (newValue) => {
+    //     formData.value = { ...newValue };
+    //   }
+    // );
     watch(
       formData,
       (newValue) => {

@@ -2,12 +2,12 @@
   <div class="page-search">
     <hy-form v-bind="searchFormConfig" v-model="formData">
       <template #header>
-        <h1>高级检索</h1>
+        <h2>高级检索</h2>
       </template>
       <template #footer>
         <div class="handle-btns">
-          <el-button>重置</el-button>
-          <el-button type="primary">搜索</el-button>
+          <el-button @click="handleResetClick">重置</el-button>
+          <el-button type="primary" @click="handlerQueryClick">搜索</el-button>
         </div>
       </template>
     </hy-form>
@@ -27,16 +27,30 @@ export default defineComponent({
   components: {
     HyForm
   },
-  setup() {
-    const formData = ref({
-      id: "",
-      name: "",
-      password: "",
-      sport: "",
-      createTime: ""
-    });
+  emits: ["resetBtnClick", "queryBtnClick"],
+  setup(props, { emit }) {
+    const formItems = props.searchFormConfig?.formItems ?? [];
+    const formOriginData: any = {};
+    for (const item of formItems) {
+      formOriginData[item.field] = "";
+    }
+    const formData = ref(formOriginData);
+    //重置按钮
+    const handleResetClick = () => {
+      //方式一
+      for (const key in formOriginData) {
+        formData.value[`${key}`] = formOriginData[key];
+      }
+      emit("resetBtnClick", formData);
+    };
+    //搜索按钮
+    const handlerQueryClick = () => {
+      emit("queryBtnClick", formData);
+    };
     return {
-      formData
+      formData,
+      handleResetClick,
+      handlerQueryClick
     };
   }
 });

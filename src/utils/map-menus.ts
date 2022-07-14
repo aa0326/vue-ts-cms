@@ -51,4 +51,36 @@ export function pathMapToMenu(
     }
   }
 }
+
+//获取按钮权限
+export function mapMenusToPermissions(userMenus: any[]) {
+  const permission: string[] = [];
+  const _recursePermissions = (menus: any[]) => {
+    for (const menu of menus) {
+      if (menu.type === 1 || menu.type === 2) {
+        _recursePermissions(menu.children ?? []);
+      } else if (menu.type === 3) {
+        permission.push(menu.permission);
+      }
+    }
+  };
+  _recursePermissions(userMenus);
+  return permission;
+}
+
+//
+export function MenuMapLeafKeys(menuList: any[]) {
+  const leftKeys: number[] = [];
+  const _recurseGetLeaf = (menuList: any[]) => {
+    for (const menu of menuList) {
+      if (menu.children) {
+        _recurseGetLeaf(menu.children);
+      } else {
+        leftKeys.push(menu.id);
+      }
+    }
+  };
+  _recurseGetLeaf(menuList);
+  return leftKeys;
+}
 export { firstMenu };

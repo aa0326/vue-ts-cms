@@ -4,9 +4,11 @@ import router from "./router";
 import store from "./store";
 import { registerApp } from "./global";
 import { setupStore } from "./store";
-import "assets/css/index.css";
 import "normalize.css";
+import "assets/css/index.css";
+
 const app = createApp(App);
+
 registerApp(app);
 setupStore();
 app.use(store).use(router).mount("#app");

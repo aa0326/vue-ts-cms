@@ -5,7 +5,7 @@ import {
   requestUserInfoId,
   requestUserMenusByRoleId
 } from "@/network/login/login";
-import { MapMenusToRoutes } from "@/utils/map-menus";
+import { MapMenusToRoutes, mapMenusToPermissions } from "@/utils/map-menus";
 import localCache from "@/utils/cache";
 import { IRootState } from "../types";
 import { ILoginState } from "./types";
@@ -15,7 +15,8 @@ const loginModule: Module<ILoginState, IRootState> = {
     return {
       token: "",
       userInfo: {},
-      userMenus: []
+      userMenus: [],
+      permission: []
     };
   },
   getters: {},
@@ -27,11 +28,15 @@ const loginModule: Module<ILoginState, IRootState> = {
       state.userInfo = userInfo;
     },
     changeUserMenus(state, userMenus) {
+      //注册动态路由
       state.userMenus = userMenus;
       const routes = MapMenusToRoutes(userMenus);
       routes.forEach((route) => {
         router.addRoute("main", route);
       });
+      //获取用户按钮的权限
+      const permission = mapMenusToPermissions(userMenus);
+      state.permission = permission;
     }
   },
   actions: {
@@ -41,6 +46,8 @@ const loginModule: Module<ILoginState, IRootState> = {
       const { id, token } = loginResult.data;
       commit("changeToken", token);
       localCache.setCache("token", token);
+
+      this.dispatch("getInitialData", null, { root: true });
       //2.请求用户信息
       const userInfoResult = await requestUserInfoId(id);
       const userInfo = userInfoResult.data;
@@ -60,6 +67,7 @@ const loginModule: Module<ILoginState, IRootState> = {
       const userMenus = localCache.getCache("userMenus");
       if (token) {
         commit("changeToken", token);
+        this.dispatch("getInitialData", null, { root: true });
       }
       if (userInfo) {
         commit("changeUserInfo", userInfo);

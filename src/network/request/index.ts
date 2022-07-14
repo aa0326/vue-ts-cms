@@ -60,7 +60,7 @@ class ApiRequestClass {
     );
   }
 
-  request<T>(config: ApiRequestConfig<T>): Promise<T> {
+  request<T = any>(config: ApiRequestConfig<T>): Promise<T> {
     return new Promise((resolve, reject) => {
       //单个请求config的处理
       if (config.interceptors?.RequestInterceptor) {
@@ -85,19 +85,19 @@ class ApiRequestClass {
     });
   }
 
-  get<T>(config: ApiRequestConfig<T>): Promise<T> {
+  get<T = any>(config: ApiRequestConfig<T>): Promise<T> {
     return this.request({ ...config, method: "GET" });
   }
 
-  post<T>(config: ApiRequestConfig<T>): Promise<T> {
+  post<T = any>(config: ApiRequestConfig<T>): Promise<T> {
     return this.request({ ...config, method: "POST" });
   }
 
-  delete<T>(config: ApiRequestConfig<T>): Promise<T> {
+  delete<T = any>(config: ApiRequestConfig<T>): Promise<T> {
     return this.request({ ...config, method: "DELETE" });
   }
 
-  patch<T>(config: ApiRequestConfig<T>): Promise<T> {
+  patch<T = any>(config: ApiRequestConfig<T>): Promise<T> {
     return this.request({ ...config, method: "PATCH" });
   }
 }
